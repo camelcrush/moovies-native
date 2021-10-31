@@ -7,7 +7,6 @@ const Title = styled.Text`
   color: white;
   font-weight: 600;
   margin-top: 7px;
-  margin-bottom: 5px;
 `;
 
 const HMovie = styled.View`
@@ -18,7 +17,7 @@ const HMovie = styled.View`
 
 const HColumn = styled.View`
   margin-left: 15px;
-  width: 80%;
+  width: 70%;
 `;
 
 const Overview = styled.Text`
@@ -52,7 +51,11 @@ const HMedia: React.FC<HMediaProps> = ({
     <HMovie>
       <Poster path={posterPath} />
       <HColumn>
-        <Title>{originalTitle}</Title>
+        <Title>
+          {originalTitle.length > 30
+            ? `${originalTitle.slice(0, 30)}...`
+            : originalTitle}
+        </Title>
         {releaseDate ? (
           <Release>
             {new Date(releaseDate).toLocaleDateString("ko", {
