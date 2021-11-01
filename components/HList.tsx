@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
+import { Movie, TV } from "../api";
 import VMedia from "./VMedia";
 
 const ListContainer = styled.View`
@@ -33,8 +34,8 @@ const HList: React.FC<HlistProps> = ({ title, data }) => (
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={HListSeparator}
       contentContainerStyle={{ paddingHorizontal: 30 }}
-      keyExtractor={(item) => item.id + ""}
-      renderItem={({ item }) => (
+      keyExtractor={(item: Movie | TV) => item.id + ""}
+      renderItem={({ item }: { item: Movie | TV }) => (
         <VMedia
           posterPath={item.poster_path}
           originalTitle={item.original_title ?? item.original_name}
