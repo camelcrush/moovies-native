@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
-import { Dimensions, StyleSheet, Linking } from "react-native";
+import { Dimensions, StyleSheet, Share, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import styled from "styled-components/native";
 import { Movie, moviesApi, TV, tvApi } from "../api";
@@ -11,6 +11,7 @@ import { useQuery } from "react-query";
 import Loader from "../components/Loader";
 import * as WebBrowser from "expo-web-browser";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -75,11 +76,46 @@ const Detail: React.FC<DetailScreenProps> = ({
     [isMovie ? "movies" : "tv", params.id],
     isMovie ? moviesApi.detail : tvApi.detail
   );
+  const ShareMedia = async () => {
+    const isAndroid = Platform.OS === "android";
+    const homepage = isMovie
+      ? `https://www.imdb.com/title/${data.imdb_id}/`
+      : data.hompage;
+    if (isAndroid) {
+      await Share.share({
+        message: `${params.overview}\nCheck it out: ${homepage}`,
+        title:
+          "original_title" in params
+            ? params.original_title
+            : params.original_name,
+      });
+    } else {
+      await Share.share({
+        url: homepage,
+        title:
+          "original_title" in params
+            ? params.original_title
+            : params.original_name,
+      });
+    }
+  };
+  const ShareButton = () => (
+    <TouchableOpacity onPress={ShareMedia}>
+      <Ionicons name="share-outline" color="white" size={25} />
+    </TouchableOpacity>
+  );
   useEffect(() => {
     setOptions({
       title: "original_title" in params ? "Movie" : "TV Show",
     });
   }, []);
+  useEffect(() => {
+    if (data) {
+      setOptions({
+        headerRight: () => <ShareButton />,
+      });
+    }
+  }, [data]);
   const openYTLink = async (videoId: string) => {
     const baseUrl = `https://m.youtube.com/watch?v=${videoId}`;
     // await Linking.openURL(baseUrl);
