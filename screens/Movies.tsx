@@ -117,3 +117,16 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
 };
 
 export default Movies;
+
+// Infinite Scroll data
+// {
+//   "pageParmas": [undefined],
+//   "pages": [
+//     {"dates": [Object], "page":1 "results": [Array], "total_pages":... }
+//     {"dates": [Object], "page":2 "results": [Array], "total_pages":... }
+//     {"dates": [Object], "page":3 "results": [Array], "total_pages":... }
+//   ]
+// }
+// data.pages.map(page => results)
+// [[Movie], [Movie], [Movie], ...].flat()
+// [Movie, Movie, Movie]
