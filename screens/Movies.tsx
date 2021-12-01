@@ -127,6 +127,6 @@ export default Movies;
 //     {"dates": [Object], "page":3 "results": [Array], "total_pages":... }
 //   ]
 // }
-// data.pages.map(page => results)
+// data.pages.map(page => page.results)
 // [[Movie], [Movie], [Movie], ...].flat()
 // [Movie, Movie, Movie]
